@@ -506,19 +506,19 @@ function get_video_id(string) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-exports.run = function(server_name, text_channel_name, voice_channel_name, aliases_path, token) {
+exports.run = function(server_id, text_channel_id, voice_channel_id, aliases_path, token) {
 
 	aliases_file_path = aliases_path;
 
 	bot.on("ready", () => {
-		var server = bot.guilds.find("name", server_name);
-		if(server === null) throw "Couldn't find server '" + server_name + "'";
+		var server = bot.guilds.get(server_id);
+		if(server === null) throw "Couldn't find server '" + server_id + "'";
 
-		var voice_channel = server.channels.find(chn => chn.name === voice_channel_name && chn.type === "voice"); //The voice channel the bot will connect to
-		if(voice_channel === null) throw "Couldn't find voice channel '" + voice_channel_name + "' in server '" + server_name + "'";
+		var voice_channel = server.channels.get( voice_channel_id); //The voice channel the bot will connect to
+		if(voice_channel === null) throw "Couldn't find voice channel '" +  voice_channel_id + "' in server '" + server_id + "'";
 		
-		text_channel = server.channels.find(chn => chn.name === text_channel_name && chn.type === "text"); //The text channel the bot will use to announce stuff
-		if(text_channel === null) throw "Couldn't find text channel '#" + text_channel_name + "' in server '" + server_name + "'";
+		text_channel = server.channels.get(text_channel_id); //The text channel the bot will use to announce stuff
+		if(text_channel === null) throw "Couldn't find text channel '#" + text_channel_id + "' in server '" + server_id + "'";
 
 		voice_channel.join().then(connection => {voice_connection = connection;}).catch(console.error);
 
